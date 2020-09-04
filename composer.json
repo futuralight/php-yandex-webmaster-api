@@ -1,5 +1,5 @@
 {
-    "name": "sb15/php-yandex-webmaster-api",
+    "name": "futuralight/php-yandex-webmaster-api",
     "type": "library",
     "description": "yandex webmaster api",
     "keywords": ["api"],
