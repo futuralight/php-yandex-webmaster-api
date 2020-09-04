@@ -3,6 +3,7 @@
 namespace Futuralight\YandexWebmaster;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
 use Exception;
 
 
@@ -27,14 +28,13 @@ class Api
             'Accept' => "application/json",
             'Content-type' => "application/json"
         ]]);
-
     }
 
     public function getUserId()
     {
         if (!$this->userId) {
             $response = $this->client->get(self::END_POINT . "/v{$this->version}/user/");
-            $response = json_decode($response);
+            $response = json_decode($response->getBody());
             $this->userId = $response->user_id;
         }
 
@@ -44,13 +44,13 @@ class Api
     public function getHosts()
     {
         $response = $this->client->get(self::END_POINT . "/v{$this->version}/user/" . $this->getUserId() . '/hosts/');
-        return json_decode($response);
+        return json_decode($response->getBody());
     }
 
     public function getHost($hostId)
     {
         $response = $this->client->get(self::END_POINT . "/v{$this->version}/user/" . $this->getUserId() . '/hosts/' . $hostId . '/');
-        return json_decode($response);
+        return json_decode($response->getBody());
     }
 
     public function addOriginalText($hostId, $text)
@@ -58,12 +58,25 @@ class Api
         $content = json_encode(['content' => $text]);
 
         $response = $this->client->post(self::END_POINT . "/v{$this->version}/user/" . $this->getUserId() . '/hosts/' . $hostId . '/original-texts/', $content);
-        $response = json_decode($response);
-
-        if (isset($response->error_message)) {
-            throw new Exception($response->error_message);
-        }
+        $response = json_decode($response->getBody());
 
         return $response->text_id;
+    }
+
+    public function getHostQuota($hostId)
+    {
+        $response = $this->client->get(self::END_POINT . "/v{$this->version}/user/" . $this->getUserId() . '/hosts/' . $hostId . '/recrawl/quota');
+        return json_decode($response->getBody());
+    }
+
+    public function postRecrawl($hostId, $url)
+    {
+        $response = $this->client->post(
+            self::END_POINT . "/v{$this->version}/user/" . $this->getUserId() . '/hosts/' . $hostId . '/recrawl/queue',
+            [
+                RequestOptions::JSON => ['url' => $url]
+            ]
+        );
+        return json_decode($response->getBody());
     }
 }
