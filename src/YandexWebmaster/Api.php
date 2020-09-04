@@ -1,10 +1,10 @@
 <?php
 
-namespace Sb\YandexWebmaster;
+namespace Futuralight\YandexWebmaster;
 
 use GuzzleHttp\Client;
-use Sb\YandexWebmaster\Exception\Exception;
-use SoapClient;
+use Exception;
+
 
 class Api
 {

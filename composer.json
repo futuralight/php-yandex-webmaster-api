@@ -12,13 +12,13 @@
             "email": "alex@sb6.ru"
         },
         {
-            "name": "Maxim Yutin",
+            "name": "Maxim Yurin",
             "email": "futuralight@outlook.com"
         }
     ],
     "autoload": {
         "psr-4": {
-            "Futuralight\\YandexWebmaster": "src"
+            "Futuralight\\YandexWebmaster\\": "src"
         }
     },
     "require": {
