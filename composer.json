@@ -5,11 +5,17 @@
     "keywords": [
         "api"
     ],
+    "homepage": "https://github.com/sb15/php-yandex-webmaster-api",
     "license": "MIT",
     "authors": [{
-        "name": "Maxim Yurin",
-        "email": "futuralight@outlook.com"
-    }],
+            "name": "Alexander Perov",
+            "email": "alex@sb6.ru"
+        },
+        {
+            "name": "Maxim Yurin",
+            "email": "futuralight@outlook.com"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Futuralight\\YandexWebmaster\\": "src"
