@@ -2,8 +2,9 @@
 
 namespace Sb\YandexWebmaster;
 
-use Sb\Browser\Console as Browser;
+use GuzzleHttp\Client;
 use Sb\YandexWebmaster\Exception\Exception;
+use SoapClient;
 
 class Api
 {
@@ -11,23 +12,28 @@ class Api
 
     protected $siteId = null;
     protected $oauthToken = null;
-    protected $browser = null;
+    protected $version;
+    protected $client;
 
     private $userId = null;
 
-    public function __construct($oauthToken)
+    public function __construct($oauthToken, $version = "4")
     {
         $this->oauthToken = $oauthToken;
-        $this->browser = new Browser();
-        $this->browser->addHeader("Authorization", "OAuth " . $oauthToken);
-        $this->browser->addHeader("Accept", "application/json");
-        $this->browser->addHeader("Content-type", "application/json");
+        $this->version = $version;
+        $this->client = new Client(['headers' =>
+        [
+            'Authorization' => "OAuth {$this->oauthToken}",
+            'Accept' => "application/json",
+            'Content-type' => "application/json"
+        ]]);
+
     }
 
     public function getUserId()
     {
         if (!$this->userId) {
-            $response = $this->browser->get(self::END_POINT . '/v3/user/');
+            $response = $this->client->get(self::END_POINT . "/v{$this->version}/user/");
             $response = json_decode($response);
             $this->userId = $response->user_id;
         }
@@ -37,13 +43,13 @@ class Api
 
     public function getHosts()
     {
-        $response = $this->browser->get(self::END_POINT . '/v3/user/' . $this->getUserId() . '/hosts/');
+        $response = $this->client->get(self::END_POINT . "/v{$this->version}/user/" . $this->getUserId() . '/hosts/');
         return json_decode($response);
     }
 
     public function getHost($hostId)
     {
-        $response = $this->browser->get(self::END_POINT . '/v3/user/' . $this->getUserId() . '/hosts/' . $hostId .'/');
+        $response = $this->client->get(self::END_POINT . "/v{$this->version}/user/" . $this->getUserId() . '/hosts/' . $hostId . '/');
         return json_decode($response);
     }
 
@@ -51,7 +57,7 @@ class Api
     {
         $content = json_encode(['content' => $text]);
 
-        $response = $this->browser->post(self::END_POINT . '/v3/user/' . $this->getUserId() . '/hosts/' . $hostId . '/original-texts/', $content);
+        $response = $this->client->post(self::END_POINT . "/v{$this->version}/user/" . $this->getUserId() . '/hosts/' . $hostId . '/original-texts/', $content);
         $response = json_decode($response);
 
         if (isset($response->error_message)) {

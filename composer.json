@@ -2,21 +2,26 @@
     "name": "futuralight/php-yandex-webmaster-api",
     "type": "library",
     "description": "yandex webmaster api",
-    "keywords": ["api"],
+    "keywords": [
+        "api"
+    ],
     "homepage": "https://github.com/sb15/php-yandex-webmaster-api",
     "license": "MIT",
-    "authors": [
-        {
+    "authors": [{
             "name": "Alexander Perov",
             "email": "alex@sb6.ru"
+        },
+        {
+            "name": "Maxim Yutin",
+            "email": "futuralight@outlook.com"
         }
     ],
     "autoload": {
         "psr-4": {
-            "Sb\\": "src"
+            "Futuralight\\YandexWebmaster": "src"
         }
     },
-    "require" : {
-        "sb15/php-console-browser": "*"
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
     }
 }
